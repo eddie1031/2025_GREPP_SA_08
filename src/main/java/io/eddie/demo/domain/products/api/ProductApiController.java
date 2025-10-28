@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -58,7 +57,8 @@ public class ProductApiController {
     @ResponseStatus(HttpStatus.CREATED)
     public BaseResponse<ProductDescription> create(
             @RequestBody @Valid UpsertProductRequest request,
-            @AuthenticationPrincipal(expression = "accountCode") String accountCode
+//            @AuthenticationPrincipal(expression = "accountCode") String accountCode
+            @RequestHeader("X-CODE") String accountCode
 
     ) {
         Product saved = productService.save(accountCode, request);
@@ -72,7 +72,8 @@ public class ProductApiController {
     public BaseResponse<ProductDescription> update(
             @PathVariable String code,
             @RequestBody @Valid UpsertProductRequest request,
-            @AuthenticationPrincipal(expression = "accountCode") String accountCode
+//            @AuthenticationPrincipal(expression = "accountCode") String accountCode
+            @RequestHeader("X-CODE") String accountCode
     ) {
         Product updated = productService.update(accountCode, code, request);
         return new BaseResponse<>(
@@ -84,7 +85,8 @@ public class ProductApiController {
     @DeleteMapping("/{code}")
     public BaseResponse<String> delete(
             @PathVariable String code,
-            @AuthenticationPrincipal(expression = "accountCode") String accountCode
+//            @AuthenticationPrincipal(expression = "accountCode") String accountCode
+            @RequestHeader("X-CODE") String accountCode
     ) {
         String deleted = productService.delete(accountCode, code);
         return new BaseResponse<>(

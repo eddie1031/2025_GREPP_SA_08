@@ -1,6 +1,5 @@
 package io.eddie.demo.domain.deposits.service;
 
-import io.eddie.demo.domain.accounts.model.entity.Account;
 import io.eddie.demo.domain.deposits.model.entity.Deposit;
 import io.eddie.demo.domain.deposits.model.entity.DepositHistory;
 import io.eddie.demo.domain.deposits.repository.DepositHistoryRepository;

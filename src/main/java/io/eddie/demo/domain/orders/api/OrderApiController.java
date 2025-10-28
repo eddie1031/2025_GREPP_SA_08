@@ -8,7 +8,6 @@ import io.eddie.demo.domain.orders.model.vo.CreateOrderRequest;
 import io.eddie.demo.domain.orders.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +19,8 @@ public class OrderApiController {
 
     @PostMapping
     public BaseResponse<OrderDescription> create(
-            @AuthenticationPrincipal(expression = "accountCode") String accountCode,
+//            @AuthenticationPrincipal(expression = "accountCode") String accountCode,
+            @RequestHeader("X-CODE") String accountCode,
             @RequestBody @Valid CreateOrderRequest request
     ) {
 
@@ -35,7 +35,8 @@ public class OrderApiController {
 
     @GetMapping("/{orderCode}")
     public BaseResponse<OrderDescription> getDescription(
-            @AuthenticationPrincipal(expression = "accountCode") String accountCode,
+//            @AuthenticationPrincipal(expression = "accountCode") String accountCode,
+            @RequestHeader("X-CODE") String accountCode,
             @PathVariable String orderCode
     ) {
 

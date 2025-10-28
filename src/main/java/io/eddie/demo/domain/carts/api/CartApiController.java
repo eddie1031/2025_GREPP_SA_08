@@ -11,7 +11,6 @@ import io.eddie.demo.domain.carts.service.CartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +22,8 @@ public class CartApiController {
 
     @GetMapping
     public BaseResponse<CartDescription> getDescription(
-            @AuthenticationPrincipal(expression = "accountCode") String accountCode
+//            @AuthenticationPrincipal(expression = "accountCode") String accountCode
+            @RequestHeader("X-CODE") String accountCode
     ) {
         Cart cart = cartService.getByAccountCode(accountCode);
         return new BaseResponse<>(
@@ -35,7 +35,8 @@ public class CartApiController {
     @PostMapping("/items")
     @ResponseStatus(HttpStatus.CREATED)
     public BaseResponse<CartItemDescription> appendItem(
-            @AuthenticationPrincipal(expression = "accountCode") String accountCode,
+//            @AuthenticationPrincipal(expression = "accountCode") String accountCode,
+            @RequestHeader("X-CODE") String accountCode,
             @RequestBody @Valid CreateCartItemRequest request
     ) {
         CartItem cartItem = cartService.appendItem(accountCode, request);
@@ -48,7 +49,8 @@ public class CartApiController {
     @DeleteMapping("/items/{itemCode}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public BaseResponse<Void> deleteItem(
-            @AuthenticationPrincipal(expression = "accountCode") String accountCode,
+//            @AuthenticationPrincipal(expression = "accountCode") String accountCode,
+            @RequestHeader("X-CODE") String accountCode,
             @PathVariable String itemCode
     ) {
         cartService.deleteItem(accountCode, itemCode);
@@ -60,7 +62,8 @@ public class CartApiController {
 
     @PatchMapping("/items/{itemCode}/increase")
     public BaseResponse<CartItemDescription> increaseQuantity(
-            @AuthenticationPrincipal(expression = "accountCode") String accountCode,
+//            @AuthenticationPrincipal(expression = "accountCode") String accountCode,
+            @RequestHeader("X-CODE") String accountCode,
             @PathVariable String itemCode
     ) {
         CartItem cartItem = cartService.increaseQuantity(accountCode, itemCode);
@@ -72,7 +75,8 @@ public class CartApiController {
 
     @PatchMapping("/items/{itemCode}/decrease")
     public BaseResponse<CartItemDescription> decreaseQuantity(
-            @AuthenticationPrincipal(expression = "accountCode") String accountCode,
+//            @AuthenticationPrincipal(expression = "accountCode") String accountCode,
+            @RequestHeader("X-CODE") String accountCode,
             @PathVariable String itemCode
     ) {
         CartItem cartItem = cartService.decreaseQuantity(accountCode, itemCode);

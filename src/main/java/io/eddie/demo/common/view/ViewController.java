@@ -5,7 +5,6 @@ import io.eddie.demo.domain.carts.model.dto.CartDescription;
 import io.eddie.demo.domain.carts.model.entity.Cart;
 import io.eddie.demo.domain.carts.service.CartService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
