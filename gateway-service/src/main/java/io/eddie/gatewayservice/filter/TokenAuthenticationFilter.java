@@ -3,8 +3,14 @@ package io.eddie.gatewayservice.filter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.eddie.core.model.web.TokenAuthorizationResponse;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -22,6 +28,9 @@ import java.util.Optional;
 
 @Component
 public class TokenAuthenticationFilter extends AbstractGatewayFilterFactory<TokenAuthenticationFilter.Config> {
+
+    @Value("${custom.jwt.secrets.app-key}")
+    private String secretKey;
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -56,9 +65,23 @@ public class TokenAuthenticationFilter extends AbstractGatewayFilterFactory<Toke
 
             String token = tokenOptional.orElseThrow(() -> new IllegalStateException("토큰은 비어있을 수 없습니다!"));
 
+            if ( !isValidToken(token) ) {
+                return response.writeWith(
+                        Flux.just(
+                                writeUnauthorizedResponseBody(response)
+                        )
+                );
+            }
 
+            Jws<Claims> claims = getClaims(token);
 
+            String accountCode = claims.getPayload().get("accountCode").toString();
 
+            ServerHttpRequest mutatedRequest = request.mutate()
+                    .header("X-CODE", accountCode)
+                    .build();
+
+            return chain.filter(exchange.mutate().request(mutatedRequest).build());
 
         };
     }
@@ -98,5 +121,29 @@ public class TokenAuthenticationFilter extends AbstractGatewayFilterFactory<Toke
 
         return Optional.empty();
     }
+
+    private boolean isValidToken(String token) {
+
+        try {
+            getClaims(token);
+            return true;
+        } catch ( JwtException e ) {
+            log.info("Invalid JWT Token was detected: {}  msg : {}", token ,e.getMessage());
+        } catch ( IllegalArgumentException e ) {
+            log.info("JWT claims String is empty: {}  msg : {}", token ,e.getMessage());
+        } catch ( Exception e ) {
+            log.error("an error raised from validating token : {}  msg : {}", token ,e.getMessage());
+        }
+
+        return false;
+    }
+
+    private Jws<Claims> getClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
+                .build()
+                .parseSignedClaims(token);
+    }
+
 
 }
