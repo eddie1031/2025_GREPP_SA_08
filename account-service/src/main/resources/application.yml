@@ -1,0 +1,35 @@
+server:
+  port: 0
+
+spring:
+
+  application:
+    name: accounts-service
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:accounts-db
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+
+custom:
+
+  jwt:
+    secrets:
+      app-key: A5A10BC17B4E653C78BDD55FFFD9DEE3BE5790CD6F3F64DC1E82E791F9821C17
+    expiration: 600000000
+
+
+eureka:
+  instance:
+    instance-id: "${spring.application.name}:${server.port}:${random.uuid}"

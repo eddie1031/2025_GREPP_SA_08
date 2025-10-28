@@ -17,10 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsUtils;
 
 @Configuration
-@RequiredArgsConstructor
 public class SecurityConfiguration {
-
-    private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(
@@ -34,7 +31,6 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
 
-                // h2-console, 필요없으면 주석처리
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 )
@@ -66,8 +62,6 @@ public class SecurityConfiguration {
                                                             .anyRequest()
                                                                 .authenticated()
                 )
-
-                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .build();
 

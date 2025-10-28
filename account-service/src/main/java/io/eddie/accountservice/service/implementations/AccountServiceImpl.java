@@ -16,9 +16,8 @@ public class AccountServiceImpl implements AccountService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
 
-    // TEMP
-    private final CartService cartService;
-    private final DepositService depositService;
+//    private final CartService cartService;
+//    private final DepositService depositService;
 
     @Override
     public Account create(CreateAccountRequest request) {
@@ -29,11 +28,11 @@ public class AccountServiceImpl implements AccountService {
                 .email(request.email())
                 .build();
 
-        Cart cart = cartService.save(account.getCode());
-        account.setCartCode(cart.getCode());
+//        Cart cart = cartService.save(account.getCode());
+//        account.setCartCode(cart.getCode());
 
-        Deposit deposit = depositService.save(account.getCode());
-        account.setDepositCode(deposit.getCode());
+//        Deposit deposit = depositService.save(account.getCode());
+//        account.setDepositCode(deposit.getCode());
 
         return accountRepository.save(account);
 
