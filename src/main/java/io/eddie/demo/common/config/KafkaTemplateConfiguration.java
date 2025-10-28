@@ -1,4 +1,4 @@
-package io.eddie.accountservice.config;
+package io.eddie.demo.common.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,19 +9,16 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
 @Configuration
-public class KafkaConfiguration {
+public class KafkaTemplateConfiguration {
 
-    @Value("${accounts.config.topic-partitions}")
+    @Value("${custom.kafka.config.topic-partitions}")
     private int topic_partitions;
 
-    @Value("${accounts.config.topic-replications}")
+    @Value("${custom.kafka.config.topic-replications}")
     private int topic_replications;
 
-    @Value("${accounts.events.topic.name}")
-    private String accountsEventsTopicName;
-
-    @Value("${carts.commands.topic.name}")
-    private String cartsCommandsTopicName;
+    @Value("${carts.event.topic.name}")
+    private String cartsEventsTopicName;
 
     @Bean
     public KafkaTemplate<String, Object> kafkaTemplate(
@@ -32,15 +29,7 @@ public class KafkaConfiguration {
 
     @Bean
     public NewTopic createAccountsEventTopic() {
-        return TopicBuilder.name(accountsEventsTopicName)
-                .partitions(topic_partitions)
-                .replicas(topic_replications)
-                .build();
-    }
-
-    @Bean
-    public NewTopic createCartsCommandsTopic() {
-        return TopicBuilder.name(cartsCommandsTopicName)
+        return TopicBuilder.name(cartsEventsTopicName)
                 .partitions(topic_partitions)
                 .replicas(topic_replications)
                 .build();

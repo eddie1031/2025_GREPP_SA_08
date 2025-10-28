@@ -40,15 +40,51 @@ spring:
         enable.idempotence: true
         allow.auto.create.topics: false
 
+    consumer:
+      group-id: accounts-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+      properties:
+        spring.json.trusted.packages: io.eddie.core.*
+        allow.auto.create.topics: false
+
+
+
 accounts:
 
   config:
     topic-partitions: 3
     topic-replications: 3
 
+  commands:
+    topic:
+      name: accounts-commands
+
   events:
     topic:
       name: accounts-events
+
+carts:
+
+  events:
+    topic:
+      name: carts-events
+
+  commands:
+    topic:
+      name: carts-commands
+
+deposits:
+
+  events:
+    topic:
+      name: deposits-events
+
+  commands:
+    topic:
+      name: deposits-commands
+
 
 custom:
 

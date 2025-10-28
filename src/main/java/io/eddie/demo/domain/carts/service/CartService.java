@@ -24,4 +24,5 @@ public interface CartService {
 
     void deleteItemsByCodes(List<String> cartItemCodes);
 
+    void deleteCart(String accountCode);
 }

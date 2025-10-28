@@ -47,20 +47,14 @@ public class SecurityConfiguration {
                 )
 
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/favicon.ico")
-                                                                .permitAll()
-                                                            .requestMatchers(CorsUtils::isPreFlightRequest)
-                                                                .permitAll()
-                                                            .requestMatchers("/view/**")
-                                                                .permitAll()
-                                                            .requestMatchers("/h2-console/**")
-                                                                .permitAll()
-                                                            .requestMatchers(HttpMethod.POST, "/accounts")
-                                                                .permitAll()
-                                                            .requestMatchers(HttpMethod.GET, "/products/**")
-                                                                .permitAll()
-                                                            .anyRequest()
-                                                                .authenticated()
+                        auth -> auth
+                                .requestMatchers("/favicon.ico").permitAll()
+                                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/accounts").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/accounts/**").permitAll()
+                                .requestMatchers("/h2-console/**").permitAll()
+                                .anyRequest().authenticated()
                 )
 
                 .build();

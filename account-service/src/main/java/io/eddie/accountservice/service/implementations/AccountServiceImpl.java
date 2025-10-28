@@ -4,7 +4,10 @@ import io.eddie.accountservice.model.dto.CreateAccountRequest;
 import io.eddie.accountservice.model.entity.Account;
 import io.eddie.accountservice.repository.AccountRepository;
 import io.eddie.accountservice.service.AccountService;
+import io.eddie.core.events.AccountCreatedEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,11 +16,32 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
+    @Value("${accounts.events.topic.name}")
+    private String accountsEventsTopicName;
+
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
 
-//    private final CartService cartService;
-//    private final DepositService depositService;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+
+    @Override
+    @Transactional
+    public void applyCartCode(String accountCode, String cartCode) {
+
+        Account account = getByAccountCode(accountCode);
+        account.setCartCode(cartCode);
+
+    }
+
+    @Override
+    @Transactional
+    public void applyDepositCode(String accountCode, String depositCode) {
+
+        Account account = getByAccountCode(accountCode);
+        account.setDepositCode(depositCode);
+
+    }
+
 
     @Override
     public Account create(CreateAccountRequest request) {
@@ -28,13 +52,13 @@ public class AccountServiceImpl implements AccountService {
                 .email(request.email())
                 .build();
 
-//        Cart cart = cartService.save(account.getCode());
-//        account.setCartCode(cart.getCode());
+        account = accountRepository.save(account);
 
-//        Deposit deposit = depositService.save(account.getCode());
-//        account.setDepositCode(deposit.getCode());
+        AccountCreatedEvent event = new AccountCreatedEvent(account.getCode());
 
-        return accountRepository.save(account);
+        kafkaTemplate.send(accountsEventsTopicName, event);
+
+        return account;
 
     }
 
@@ -51,5 +75,14 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findByCode(accountCode)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원은 존재하지 않습니다."));
     }
+
+
+    @Override
+    @Transactional
+    public void deleteByCode(String code) {
+        Account findAccount = getByAccountCode(code);
+        accountRepository.delete(findAccount);
+    }
+
 
 }

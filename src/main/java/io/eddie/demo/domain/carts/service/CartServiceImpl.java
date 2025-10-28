@@ -114,4 +114,11 @@ public class CartServiceImpl implements CartService {
         cartItemRepository.deleteAll(getItemsByCodes(cartItemCodes));
     }
 
+    @Override
+    @Transactional
+    public void deleteCart(String accountCode) {
+        Cart cart = getByAccountCode(accountCode);
+        cartRepository.delete(cart);
+    }
+
 }
