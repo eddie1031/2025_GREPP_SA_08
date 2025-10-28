@@ -1,8 +1,9 @@
-package io.eddie.accountservice.service;
+package io.eddie.accountservice.service.implementations;
 
 import io.eddie.accountservice.model.dto.CreateAccountRequest;
 import io.eddie.accountservice.model.entity.Account;
 import io.eddie.accountservice.repository.AccountRepository;
+import io.eddie.accountservice.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

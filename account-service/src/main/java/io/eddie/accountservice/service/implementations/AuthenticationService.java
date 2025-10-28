@@ -1,7 +1,8 @@
-package io.eddie.accountservice.service;
+package io.eddie.accountservice.service.implementations;
 
 import io.eddie.accountservice.mapper.AuthenticationMapper;
 import io.eddie.accountservice.model.entity.Account;
+import io.eddie.accountservice.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

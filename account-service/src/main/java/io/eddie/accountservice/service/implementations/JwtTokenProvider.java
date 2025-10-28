@@ -1,5 +1,6 @@
-package io.eddie.accountservice.service;
+package io.eddie.accountservice.service.implementations;
 
+import io.eddie.accountservice.service.TokenProvider;
 import io.eddie.core.model.vo.TokenBody;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
