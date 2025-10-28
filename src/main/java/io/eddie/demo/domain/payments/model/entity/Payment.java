@@ -1,6 +1,6 @@
 package io.eddie.demo.domain.payments.model.entity;
 
-import io.eddie.demo.common.model.persistence.BaseEntity;
+import io.eddie.core.model.persistence.BaseEntity;
 import io.eddie.demo.domain.payments.model.vo.PaymentStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

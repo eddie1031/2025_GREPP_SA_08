@@ -1,7 +1,7 @@
 package io.eddie.demo.domain.products.api;
 
-import io.eddie.demo.common.model.web.BaseResponse;
-import io.eddie.demo.common.model.web.PageResponse;
+import io.eddie.core.model.web.BaseResponse;
+import io.eddie.core.model.web.PageResponse;
 import io.eddie.demo.domain.products.mapper.ProductMapper;
 import io.eddie.demo.domain.products.model.dto.ProductDescription;
 import io.eddie.demo.domain.products.model.dto.UpsertProductRequest;

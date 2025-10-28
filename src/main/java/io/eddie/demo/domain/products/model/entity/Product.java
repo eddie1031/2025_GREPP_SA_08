@@ -1,6 +1,6 @@
 package io.eddie.demo.domain.products.model.entity;
 
-import io.eddie.demo.common.model.persistence.BaseEntity;
+import io.eddie.core.model.persistence.BaseEntity;
 import jakarta.persistence.Entity;
 import lombok.Builder;
 import lombok.Getter;

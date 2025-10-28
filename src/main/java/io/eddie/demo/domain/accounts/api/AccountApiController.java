@@ -1,6 +1,6 @@
 package io.eddie.demo.domain.accounts.api;
 
-import io.eddie.demo.common.model.web.BaseResponse;
+import io.eddie.core.model.web.BaseResponse;
 import io.eddie.demo.domain.accounts.mapper.AccountMapper;
 import io.eddie.demo.domain.accounts.model.dto.AccountDescription;
 import io.eddie.demo.domain.accounts.model.dto.AccountDetail;

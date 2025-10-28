@@ -1,6 +1,6 @@
 package io.eddie.demo.domain.payments.api;
 
-import io.eddie.demo.common.model.web.BaseResponse;
+import io.eddie.core.model.web.BaseResponse;
 import io.eddie.demo.domain.payments.mapper.PaymentMapper;
 import io.eddie.demo.domain.payments.model.dto.PaymentRequest;
 import io.eddie.demo.domain.payments.model.entity.Payment;

@@ -1,6 +1,6 @@
 package io.eddie.demo.domain.accounts.model.entity;
 
-import io.eddie.demo.common.model.persistence.BaseEntity;
+import io.eddie.core.model.persistence.BaseEntity;
 import io.eddie.demo.domain.accounts.model.vo.Role;
 import jakarta.persistence.*;
 import lombok.*;

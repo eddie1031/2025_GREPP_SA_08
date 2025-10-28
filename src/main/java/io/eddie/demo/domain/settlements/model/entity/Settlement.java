@@ -1,7 +1,7 @@
 package io.eddie.demo.domain.settlements.model.entity;
 
-import io.eddie.demo.common.model.persistence.BaseEntity;
 
+import io.eddie.core.model.persistence.BaseEntity;
 import io.eddie.demo.domain.settlements.model.vo.SettlementStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

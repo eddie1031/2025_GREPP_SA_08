@@ -18,7 +18,7 @@ public class SettlementJobScheduler {
     // [적용] 매 월 15일 오전9시
 //    @Scheduled(cron = "0 0 9 15 * *")
     // [테스트] 매 분
-    @Scheduled(cron = "0 * * * * *")
+//    @Scheduled(cron = "0 * * * * *")
     public void executeSettlement() throws Exception {
         jobLauncher.run();
     }

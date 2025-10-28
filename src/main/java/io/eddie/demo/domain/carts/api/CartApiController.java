@@ -1,6 +1,6 @@
 package io.eddie.demo.domain.carts.api;
 
-import io.eddie.demo.common.model.web.BaseResponse;
+import io.eddie.core.model.web.BaseResponse;
 import io.eddie.demo.domain.carts.mapper.CartMapper;
 import io.eddie.demo.domain.carts.model.dto.CartDescription;
 import io.eddie.demo.domain.carts.model.dto.CartItemDescription;

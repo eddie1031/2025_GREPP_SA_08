@@ -1,6 +1,6 @@
 package io.eddie.demo.domain.orders.api;
 
-import io.eddie.demo.common.model.web.BaseResponse;
+import io.eddie.core.model.web.BaseResponse;
 import io.eddie.demo.domain.orders.mapper.OrderMapper;
 import io.eddie.demo.domain.orders.model.dto.OrderDescription;
 import io.eddie.demo.domain.orders.model.entity.Orders;
