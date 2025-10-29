@@ -9,12 +9,23 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:test-db
+#    username: sa
+#    password:
 
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:test-db
-    username: sa
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/test_db
+    username: app1
+    password: app1!
 
   h2:
     console:
@@ -30,8 +41,6 @@ spring:
   kafka:
     bootstrap-servers:
       - localhost:9092
-      - localhost:9094
-      - localhost:9096
 
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -54,6 +63,9 @@ spring:
       properties:
         spring.json.trusted.packages: io.eddie.core.*
         allow.auto.create.topics: false
+
+  elasticsearch:
+    uris: http://localhost:9200
 
 carts:
 
@@ -79,8 +91,8 @@ custom:
 
   kafka:
     config:
-      topic-partitions: 3
-      topic-replications: 3
+      topic-partitions: 1
+      topic-replications: 1
 
   batch:
     chunk:
