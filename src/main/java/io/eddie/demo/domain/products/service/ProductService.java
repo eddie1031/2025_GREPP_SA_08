@@ -1,9 +1,12 @@
 package io.eddie.demo.domain.products.service;
 
+import io.eddie.demo.domain.products.model.dto.ProductDescription;
 import io.eddie.demo.domain.products.model.dto.UpsertProductRequest;
 import io.eddie.demo.domain.products.model.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface ProductService {
 
@@ -16,5 +19,10 @@ public interface ProductService {
     String delete(String accountCode, String productCode);
 
     Page<Product> getProducts(Pageable pageable);
+
+    List<String> getSuggestions(String prefix, Integer limit);
+
+    Page<ProductDescription> search(String query, Pageable pageable);
+
 
 }

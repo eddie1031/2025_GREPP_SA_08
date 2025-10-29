@@ -4,6 +4,7 @@ import io.eddie.core.model.web.BaseResponse;
 import io.eddie.core.model.web.PageResponse;
 import io.eddie.demo.domain.products.mapper.ProductMapper;
 import io.eddie.demo.domain.products.model.dto.ProductDescription;
+import io.eddie.demo.domain.products.model.dto.ProductSuggestionRequest;
 import io.eddie.demo.domain.products.model.dto.UpsertProductRequest;
 import io.eddie.demo.domain.products.model.entity.Product;
 import io.eddie.demo.domain.products.service.ProductService;
@@ -95,5 +96,30 @@ public class ProductApiController {
         );
     }
 
+    @GetMapping("/suggestions")
+    public BaseResponse<List<String>> fetchSuggestions(
+            ProductSuggestionRequest request
+    ) {
+        return new BaseResponse<>(
+          productService.getSuggestions(request.prefix(), request.limit()),
+          "성공적으로 불러왔습니다."
+        );
+    }
+
+    @GetMapping("/search")
+    public PageResponse<List<ProductDescription>> search(
+            String q,
+            Pageable pageable
+    ) {
+        Page<ProductDescription> result = productService.search(q, pageable);
+
+        return new PageResponse<>(
+                result.getNumber(),
+                result.getTotalPages(),
+                result.getSize(),
+                result.hasNext(),
+                result.getContent()
+        );
+    }
 
 }

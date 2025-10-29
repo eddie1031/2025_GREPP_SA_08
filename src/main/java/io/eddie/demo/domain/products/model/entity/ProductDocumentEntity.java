@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(indexName = "exp-products")
+@Setting(settingPath = "/elasticsearch/products-settings.json")
 public class ProductDocumentEntity {
 
     @Id
@@ -27,18 +28,24 @@ public class ProductDocumentEntity {
     )
     private String name;
 
+    @MultiField(
+            mainField = @Field(type = FieldType.Text, analyzer = "nori_analyzer", searchAnalyzer = "nori_synonym_analyzer"),
+            otherFields = {
+                    @InnerField(suffix = "keyword", type = FieldType.Keyword, normalizer = "lowercase_normalizer")
+            }
+    )
     private String description;
 
     @Field(type = FieldType.Long)
     private Long price;
 
-    @Field(type = FieldType.Keyword)
+    @Field(name = "account_code", type = FieldType.Keyword)
     private String accountCode;
 
-    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second_millis)
+    @Field(name = "created_at",type = FieldType.Date, format = DateFormat.date_time)
     private LocalDateTime createdAt;
 
-    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second_millis)
+    @Field(type = FieldType.Date, format = DateFormat.date_time)
     private LocalDateTime updatedAt;
 
 

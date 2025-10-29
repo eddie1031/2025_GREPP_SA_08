@@ -20,6 +20,10 @@ public class KafkaTemplateConfiguration {
     @Value("${carts.event.topic.name}")
     private String cartsEventsTopicName;
 
+    @Value("${deposits.event.topic.name}")
+    private String depositsEventsTopicName;
+
+
     @Bean
     public KafkaTemplate<String, Object> kafkaTemplate(
             ProducerFactory<String, Object> producerFactory
@@ -30,6 +34,15 @@ public class KafkaTemplateConfiguration {
     @Bean
     public NewTopic createAccountsEventTopic() {
         return TopicBuilder.name(cartsEventsTopicName)
+                .partitions(topic_partitions)
+                .replicas(topic_replications)
+                .build();
+    }
+
+    @Bean
+    public NewTopic createDepositsEventsTopic() {
+        return TopicBuilder
+                .name(depositsEventsTopicName)
                 .partitions(topic_partitions)
                 .replicas(topic_replications)
                 .build();

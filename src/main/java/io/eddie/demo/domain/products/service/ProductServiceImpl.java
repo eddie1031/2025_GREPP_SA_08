@@ -1,15 +1,24 @@
 package io.eddie.demo.domain.products.service;
 
+import io.eddie.demo.domain.products.mapper.ProductMapper;
+import io.eddie.demo.domain.products.model.dto.ProductDescription;
 import io.eddie.demo.domain.products.model.dto.UpsertProductRequest;
 import io.eddie.demo.domain.products.model.entity.Product;
+import io.eddie.demo.domain.products.model.entity.ProductDocumentEntity;
+import io.eddie.demo.domain.products.repository.ProductElasticRepository;
 import io.eddie.demo.domain.products.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -18,6 +27,7 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductElasticRepository productElasticRepository;
 
     @Override
     @Transactional
@@ -70,6 +80,42 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> getProducts(Pageable pageable) {
         return productRepository.findProducts(pageable);
+    }
+
+    @Override
+    public List<String> getSuggestions(String prefix, Integer limit) {
+
+        SearchHits<ProductDocumentEntity> searchHits = productElasticRepository.autoComplete(prefix);
+
+        log.info("searchHits = {}", searchHits);
+
+        return searchHits.stream()
+                .map( sh -> sh.getContent() )
+                .map( p -> p.getName())
+                .distinct()
+                .toList();
+    }
+
+    @Override
+    public Page<ProductDescription> search(String query, Pageable pageable) {
+        SearchPage<ProductDocumentEntity> searchPage = productElasticRepository.search(query, pageable);
+
+        log.info("Total hits: {}, Total pages: {}",
+                searchPage.getTotalElements(),
+                searchPage.getTotalPages());
+
+        List<ProductDescription> productDescriptions = searchPage.getSearchHits()
+                .stream()
+                .map(i -> {
+                    ProductDocumentEntity content = i.getContent();
+                    log.info("content.getAccountCode() = {}", content.getAccountCode());
+
+                    return content;
+                })
+                .map(ProductMapper::toDescription)
+                .toList();
+
+        return new PageImpl<>(productDescriptions, pageable, searchPage.getTotalElements());
     }
 
 

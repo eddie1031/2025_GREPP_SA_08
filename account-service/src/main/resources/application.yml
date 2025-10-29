@@ -50,12 +50,14 @@ spring:
         allow.auto.create.topics: false
 
 
-
 accounts:
 
+#  config:
+#    topic-partitions: 3
+#    topic-replications: 3
   config:
-    topic-partitions: 3
-    topic-replications: 3
+    topic-partitions: 1
+    topic-replications: 1
 
   commands:
     topic:

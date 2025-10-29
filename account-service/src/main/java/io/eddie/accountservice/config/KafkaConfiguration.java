@@ -23,6 +23,12 @@ public class KafkaConfiguration {
     @Value("${carts.commands.topic.name}")
     private String cartsCommandsTopicName;
 
+    @Value("${deposits.commands.topic.name}")
+    private String depositsCommandTopicName;
+
+    @Value("${accounts.commands.topic.name}")
+    private String accountsCommandTopicName;
+
     @Bean
     public KafkaTemplate<String, Object> kafkaTemplate(
             ProducerFactory<String, Object> producerFactory
@@ -45,5 +51,24 @@ public class KafkaConfiguration {
                 .replicas(topic_replications)
                 .build();
     }
+
+    @Bean
+    public NewTopic createDepositsCommandsTopic() {
+        return TopicBuilder
+                .name(depositsCommandTopicName)
+                .partitions(topic_partitions)
+                .replicas(topic_replications)
+                .build();
+    }
+
+    @Bean
+    public NewTopic createAccountsCommandsTopic() {
+        return TopicBuilder
+                .name(accountsCommandTopicName)
+                .partitions(topic_partitions)
+                .replicas(topic_replications)
+                .build();
+    }
+
 
 }
