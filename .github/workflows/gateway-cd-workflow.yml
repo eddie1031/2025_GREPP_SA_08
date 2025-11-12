@@ -1,0 +1,27 @@
+name: account-service ci/cd
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'gateway-service/**'
+
+jobs:
+
+  releasing:
+    uses: ./.github/workflows/release-workflow.yml
+    secrets: inherit
+    with:
+      service-name: sa-gateway-service
+      service-dir: .
+      file-name: Dockerfile__gateway_service
+
+  deploying:
+    needs: releasing
+    uses: ./.github/workflows/deploy-workflow.yml
+    with:
+      service-name: sa-gateway-service
+      image-tag: ${{ needs.releasing.outputs.tag_name }}
+
+

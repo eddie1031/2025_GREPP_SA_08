@@ -106,12 +106,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductDescription> productDescriptions = searchPage.getSearchHits()
                 .stream()
-                .map(i -> {
-                    ProductDocumentEntity content = i.getContent();
-                    log.info("content.getAccountCode() = {}", content.getAccountCode());
-
-                    return content;
-                })
+                .map(SearchHit::getContent)
                 .map(ProductMapper::toDescription)
                 .toList();
 

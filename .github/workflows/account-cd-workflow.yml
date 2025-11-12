@@ -1,0 +1,40 @@
+name: account-service ci/cd
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'account-service/**'
+  workflow_dispatch:
+    inputs:
+      service-name:
+        description: 'Service name for deployment'
+        required: false
+        default: 'sa-accounts-service'
+      force-deploy:
+        description: 'Force deployment even without changes'
+        required: false
+        type: boolean
+        default: false
+
+
+jobs:
+
+  releasing:
+    uses: ./.github/workflows/release-workflow.yml
+    secrets: inherit
+    with:
+      service-name: sa-accounts-service
+      service-dir: .
+      file-name: Dockerfile__account_service
+
+  deploying:
+    needs: releasing
+    uses: ./.github/workflows/deploy-workflow.yml
+    secrets: inherit
+    with:
+      service-name: sa-accounts-service
+      image-tag: ${{ needs.releasing.outputs.tag_name }}
+
+
